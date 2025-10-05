@@ -1,117 +1,293 @@
-# Backend API with Spring Boot for Abbey Bank.
+# Banking System API
 
+A comprehensive RESTful API for simulating real banking operations, built with Spring Boot and MySQL. This system provides secure account management, transaction processing, and financial services.
 
 ## Overview
 
-This Banking-system API is a Backend application built with Java Spring Boot. It includes a wide range of Banking features and functionalities necessary for modern online banks. The project is designed to showcase best practices in building robust and secure web applications using the technologies mentioned above.
+The Banking System API is a robust backend application that replicates core banking functionalities. Built with modern Spring Boot architecture, it demonstrates best practices in building secure, scalable financial applications with features like JWT authentication, email notifications, and PDF statement generation.
 
 ## Features
 
-- **User Authentication**: Utilizes Spring Security and Okta for secure user authentication and authorization.
+### Account Management
+- **User Registration & Authentication**: Secure account creation with Spring Security and JWT tokens
+- **Account Inquiry**: Retrieve detailed account information
+- **Name Enquiry**: Verify account holder details
+- **Profile Management**: Update user information and preferences
 
-- **Product Catalog**: Allows users to browse and search for products with a well-structured product catalog.
+### Transaction Operations
+- **Credit/Deposit**: Add funds to accounts with transaction tracking
+- **Debit/Withdrawal**: Withdraw funds with balance validation
+- **Fund Transfer**: Seamless inter-account money transfers
+- **Transaction History**: Complete audit trail of all operations
 
-- **Shopping Cart**: Users can add products to their cart and proceed to checkout seamlessly.
-
-- **Payment Integration**: Integration with Stripe for handlin
-- **Swagger API Documentation**: Detailed API documentation using Swagger.
-
-- **Responsive Design**: Improved styling and responsive design for a better user experience.
-
-- **Frontend Hosting**: The frontend is hosted on Netlify for easy access.
-
-- **Backend and Database Hosting**: The backend and database are hosted on Railway.
+### Additional Features
+- **Email Notifications**: Automated transaction alerts and account updates
+- **PDF Statements**: Generate and download account statements
+- **API Documentation**: Interactive Swagger/OpenAPI documentation
+- **Security**: JWT-based authentication and authorization
+- **Data Validation**: Comprehensive input validation and error handling
 
 ## Technologies Used
 
-- Java 11
-- Apache Maven
-- Hibernate
-- Spring Core
-- Spring Data
-- Spring REST
-- Spring Boot
-- Spring Security
-- TypeScript
-- Angular
-- Okta
-- Stripe
-- Swagger API
+- **Backend Framework:** Spring Boot 3.1.5
+- **Language:** Java 21
+- **Database:** MySQL
+- **Security:** Spring Security with JWT (jjwt 0.12.3)
+- **ORM:** Spring Data JPA / Hibernate
+- **Build Tool:** Maven 3.9.5
+- **API Documentation:** SpringDoc OpenAPI 2.2.0
+- **Email Service:** Spring Boot Mail
+- **PDF Generation:** iText 5.5.13
+- **Development Tools:** Lombok, Spring Boot DevTools
 
-## Contributions
+## Getting Started
 
-### Added Swagger API Documentation
+### Prerequisites
 
-I contributed by implementing Swagger API documentation to provide detailed information on the project's API endpoints. This documentation can be accessed at [Swagger API Documentation](https://luv2shop-backend.up.railway.app/swagger-ui/index.html).
+- Java 21 or higher
+- Maven 3.6+
+- MySQL 8.0+
+- SMTP server (for email notifications)
 
-### Refine Styling and Responsive Design
+### Installation
 
-I worked on enhancing the overall user interface by refining the styling and ensuring a responsive design. This improves the user experience and makes the website more visually appealing.
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/Banking-System-API.git
+cd Banking-System-API
+```
 
-### Frontend Hosting on Netlify
+2. **Create MySQL database**
+```bash
+mysql -u root -p
+CREATE DATABASE banking_system;
+EXIT;
+```
 
-The frontend of the project is hosted on Netlify for easy access.
+3. **Configure application properties**
 
-### Backend and MySQL Database Hosting on Railway
+Create or update `src/main/resources/application.properties`:
 
-The backend of the project, along with the MySQL database, is hosted on Railway.
+```properties
+# Database Configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/banking_system
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
 
-## Usage
+# Server Configuration
+server.port=8080
 
-To make the most of the Luv2Shop website, follow these steps:
+# JWT Configuration
+jwt.secret=your_jwt_secret_key_at_least_256_bits_long
+jwt.expiration=86400000
 
-1. **Browse the Product Catalog:**
+# Email Configuration
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your_email@gmail.com
+spring.mail.password=your_app_password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
 
-   - You can access the product catalog without logging in. Simply visit the website to explore the available products.
+4. **Build the project**
+```bash
+mvn clean install
+```
 
-2. **Login to Your Account:**
+5. **Run the application**
+```bash
+mvn spring-boot:run
+```
 
-   - To log in, use the following credentials:
-     - Email: lajec12115@hapincy.com
-     - Password: admin123456789
+The API will be available at `http://localhost:8080`
 
-3. **Access Additional Features with Login:**
+## API Documentation
 
-   - Logging in provides access to more sections of the website, such as:
-     - Member: Profile information.
-     - Orders: View your order history.
+Once the application is running, access the interactive API documentation:
 
-4. **Add Items to Your Cart:**
+- **Swagger UI**: `http://localhost:8080/swagger-ui/index.html`
+- **OpenAPI Spec**: `http://localhost:8080/v3/api-docs`
 
-   - When you find a product you want to purchase, click the "Add to Cart" button.
-   - You can review and modify the contents of your shopping cart at any time.
+## API Endpoints
 
-5. **Proceed to Checkout:**
+### Authentication
+- `POST /api/auth/register` - Create a new account
+- `POST /api/auth/login` - User login and receive JWT token
 
-   - Once you've added all the desired items to your cart, proceed to checkout.
-   - Provide the necessary shipping and billing information.
-   - Review your order to ensure it's accurate.
+### Account Operations
+- `GET /api/account/{accountNumber}` - Get account details
+- `GET /api/account/name-enquiry/{accountNumber}` - Verify account holder name
+- `PUT /api/account/update` - Update account information
 
-6. **Make a Payment Using Stripe:**
+### Transactions
+- `POST /api/transaction/credit` - Deposit funds
+- `POST /api/transaction/debit` - Withdraw funds
+- `POST /api/transaction/transfer` - Transfer between accounts
+- `GET /api/transaction/history/{accountNumber}` - Transaction history
+- `GET /api/transaction/statement/{accountNumber}` - Generate PDF statement
 
-   For testing purposes, you can complete your purchase using the following test card details provided by Stripe:
+## Usage Examples
 
-   - Card Number: 4242 4242 4242 4242
-   - Expiration Date: Any future date (e.g., 12/25)
-   - CVC: Any three-digit number (e.g., 123)
+### Register a New Account
+```bash
+curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "password": "SecurePassword123",
+    "phoneNumber": "+1234567890",
+    "address": "123 Main St"
+  }'
+```
 
-   These test card details simulate a successful payment and allow you to test the payment functionality without making actual charges to a credit card.
+### Login
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "accountNumber": "1234567890",
+    "password": "SecurePassword123"
+  }'
+```
 
-7. **Order Confirmation and Tracking:**
-   - After successfully placing your order, a confirmation popup will appear.
-   - Additionally, you can access the "Orders" section in your account to view all your orders.
+### Transfer Funds
+```bash
+curl -X POST http://localhost:8080/api/transaction/transfer \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "fromAccount": "1234567890",
+    "toAccount": "0987654321",
+    "amount": 1000.00,
+    "description": "Payment for services"
+  }'
+```
 
-## Demo
+### Java Client Example
+```java
+RestTemplate restTemplate = new RestTemplate();
+HttpHeaders headers = new HttpHeaders();
+headers.setContentType(MediaType.APPLICATION_JSON);
+headers.setBearerAuth(jwtToken);
 
-## Video Demonstration
+// Transfer request
+TransferRequest request = TransferRequest.builder()
+    .fromAccount("1234567890")
+    .toAccount("0987654321")
+    .amount(new BigDecimal("1000.00"))
+    .description("Payment")
+    .build();
 
-Watch a video demonstration of the Luv2Shop project [here](https://www.youtube.com/watch?v=jLlTbAgyTbQ).
+HttpEntity<TransferRequest> entity = new HttpEntity<>(request, headers);
+ResponseEntity<TransferResponse> response = restTemplate.exchange(
+    "http://localhost:8080/api/transaction/transfer",
+    HttpMethod.POST,
+    entity,
+    TransferResponse.class
+);
+```
 
-## Contact Information
+## Testing
 
-If you have any questions, suggestions, or just want to get in touch, you can reach us at:
+Run the test suite:
+```bash
+mvn test
+```
 
-- Email: [awintiahmed2017@gmail.com](mailto:awintiahmed2017@gmail.com)
-- LinkedIn: [Ahmed Aouinti](https://www.linkedin.com/in/ahmed-aouinti-8a6974146/)
+Run with coverage:
+```bash
+mvn clean test jacoco:report
+```
+
+## Project Structure
+
+```
+banking-system/
+├── src/
+│   ├── main/
+│   │   ├── java/com/abbey2u/bankingsystem/
+│   │   │   ├── config/          # Security, JWT, Email config
+│   │   │   ├── controller/      # REST controllers
+│   │   │   ├── dto/             # Data Transfer Objects
+│   │   │   ├── entity/          # JPA entities
+│   │   │   ├── repository/      # Data access layer
+│   │   │   ├── service/         # Business logic
+│   │   │   ├── security/        # JWT filters, authentication
+│   │   │   └── util/            # Helper classes
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── templates/       # Email templates
+│   └── test/                    # Unit and integration tests
+├── pom.xml
+└── README.md
+```
+
+## Security Features
+
+- **Password Encryption**: BCrypt hashing for secure password storage
+- **JWT Authentication**: Stateless token-based authentication
+- **Authorization**: Role-based access control
+- **Input Validation**: Bean Validation for all API inputs
+- **SQL Injection Protection**: JPA/Hibernate parameterized queries
+- **CORS Configuration**: Configurable cross-origin policies
+
+## Error Handling
+
+The API uses standard HTTP status codes and returns detailed error messages:
+
+- `200 OK` - Successful operation
+- `201 Created` - Resource created successfully
+- `400 Bad Request` - Invalid input or business rule violation
+- `401 Unauthorized` - Missing or invalid authentication
+- `403 Forbidden` - Insufficient permissions
+- `404 Not Found` - Resource not found
+- `500 Internal Server Error` - Server-side error
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/NewFeature`)
+3. Commit your changes (`git commit -m 'Add NewFeature'`)
+4. Push to the branch (`git push origin feature/NewFeature`)
+5. Open a Pull Request
+
+### Coding Standards
+- Follow Java naming conventions
+- Write unit tests for new features
+- Update documentation as needed
+- Ensure all tests pass before submitting PR
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Roadmap
+
+- [ ] Multi-currency support
+- [ ] Loan management system
+- [ ] Savings account features
+- [ ] Fixed deposit accounts
+- [ ] Mobile banking API extensions
+- [ ] Real-time notifications with WebSocket
+- [ ] Enhanced fraud detection
+- [ ] Account statements via email
+- [ ] Multi-factor authentication (MFA)
 
 
+## Acknowledgments
+
+- Spring Framework team for excellent documentation
+- Banking industry best practices and standards
+- Open source community contributors
+- RESTful API design principles
+
+---
+
+**Note**: This is a simulation project for educational purposes. Do not use in production without proper security audits and compliance reviews.
